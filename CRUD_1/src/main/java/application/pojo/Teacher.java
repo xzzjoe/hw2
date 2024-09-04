@@ -1,5 +1,7 @@
 package application.pojo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import application.pojo.Student;
 import java.util.Set;
@@ -21,7 +23,12 @@ public class Teacher {
     private String name;
 
     @ManyToMany(mappedBy = "teachers")
+    @JsonBackReference
     private Set<Student> students = new HashSet<>();
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Long getId() {
         return id;

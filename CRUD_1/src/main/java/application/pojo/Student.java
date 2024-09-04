@@ -1,5 +1,6 @@
 package application.pojo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -28,6 +29,10 @@ public class Student {
             inverseJoinColumns = @JoinColumn(name = "teacher_id")
     )
     private Set<Teacher> teachers = new HashSet<>();
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Long getId() {
         return id;
