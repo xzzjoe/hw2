@@ -1,16 +1,18 @@
-package controller;
+package application.controller;
 
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import student.Student;
-import teacher.Teacher;
+import application.pojo.Student;
+import application.pojo.Teacher;
 
 import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/students")
+@RequestMapping(value = "/students")
 public class StudentController {
 
     @Autowired
@@ -22,7 +24,7 @@ public class StudentController {
         return student;
     }
 
-    @GetMapping("value=/")
+    @GetMapping(value="/")
     public List<Student> getAllStudents() {
         // Hardcoded list of students for testing
         Teacher teacher1 = new Teacher(1L, "Teacher1");
@@ -43,10 +45,21 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public Student getStudent(@PathVariable Long id) {
-        return entityManager.find(Student.class, id);
+    public ResponseEntity<Student> getStudent(@PathVariable Long id) {
+        System.out.println(id);
+        try {
+            Student student = entityManager.getReference(Student.class, id);
+            if (student == null) {
+                // If the student is not found, return a 404 Not Found response
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            // Return the student with an OK (200) status
+            return new ResponseEntity<>(student, HttpStatus.OK);
+        } catch (Exception e) {
+            // Catch any other exceptions and return a 500 Internal Server Error
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-
     @PutMapping("/{id}")
     public Student updateStudent(@PathVariable Long id, @RequestBody Student updatedStudent) {
         Student student = entityManager.find(Student.class, id);
@@ -60,6 +73,7 @@ public class StudentController {
 
     @DeleteMapping("/{id}")
     public void deleteStudent(@PathVariable Long id) {
+
         Student student = entityManager.find(Student.class, id);
         if (student != null) {
             entityManager.remove(student);

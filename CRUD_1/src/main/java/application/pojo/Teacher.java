@@ -1,12 +1,14 @@
-package teacher;
+package application.pojo;
 
 import jakarta.persistence.*;
-import student.Student;
+import application.pojo.Student;
 import java.util.Set;
 import java.util.HashSet;
 
 @Entity
 public class Teacher {
+    public Teacher(){
+    }
     public Teacher(Long id, String name) {
         this.id = id;
         this.name = name;

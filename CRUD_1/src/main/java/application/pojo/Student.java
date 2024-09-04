@@ -1,7 +1,7 @@
-package student;
+package application.pojo;
 
 import jakarta.persistence.*;
-import teacher.Teacher;
+
 import java.util.Set;
 import java.util.HashSet;
 
@@ -14,6 +14,8 @@ public class Student {
 
     private String name;
 
+    public Student(){
+    }
     public Student(Long id, String name) {
         this.id = id;
         this.name = name;
