@@ -23,7 +23,6 @@ public class Teacher {
     private String name;
 
     @ManyToMany(mappedBy = "teachers")
-    @JsonBackReference
     private Set<Student> students = new HashSet<>();
 
     public void setId(Long id) {
